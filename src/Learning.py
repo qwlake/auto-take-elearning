@@ -51,11 +51,9 @@ class Learning():
         for i in range(len(close_notices)): # 공지창 닫기
             close_notices[-i-1].click()
         courses = driver.find_elements_by_class_name("course_link") # 과목 목록 받아오기
-
-        title_check = driver.find_elements_by_xpath("//div[@class='course-title']")
-        for i, title in enumerate(title_check):
-            temp = title.find_element_by_xpath("//h3")
-            if self.cource_name in temp.text:
+        title_list = driver.find_elements_by_xpath("//div[@class='course-title']//h3")
+        for i, title in enumerate(title_list):
+            if self.cource_name in title.text:
                 courses[i].click()         # 과목 클릭
                 break
 
