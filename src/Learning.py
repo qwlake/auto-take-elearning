@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
+import sys
+import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
-import time
 from selenium.webdriver.common.keys import Keys
 
+
 class Learning():
-    def __init__(self, id, pw, cource_name, section=0):
+    def __init__(self, user_id, pw, cource_name, section=0):
         driver = None
-        # if not driver:
-        #     try:
-        #         driver = webdriver.Chrome(executable_path="chromedriver/chromedriver78.exe")
-        #     except:
-        #         print("chromedriver78 fail")
+        if not driver:
+            try:
+                driver = webdriver.Chrome(executable_path="chromedriver/chromedriver78.exe")
+            except:
+                print("chromedriver78 fail")
         if not driver:
             try:
                 driver = webdriver.Chrome(executable_path="chromedriver/chromedriver77.exe")
@@ -27,7 +29,7 @@ class Learning():
                 print("chromedriver76 fail")
         html = driver.page_source
         #soup = BeautifulSoup(html, "html.parser")
-        self.id = id
+        self.user_id = user_id
         self.pw = pw
         self.driver = driver
         self.cource_name = cource_name
@@ -36,10 +38,15 @@ class Learning():
     def learn(self):
         driver = self.driver
         driver.get("http://eruri.kangwon.ac.kr")    # 페이지 열기
-        driver.find_element_by_id("username").send_keys(self.id)    # 로그인
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, "username"))
+        )
+        driver.find_element_by_id("username").send_keys(self.user_id)    # 로그인
         driver.find_element_by_id("password").send_keys(self.pw)
         driver.find_element_by_tag_name("Button").click()
-        driver.implicitly_wait(2)
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, ".close_notice"))
+        )
         close_notices = driver.find_elements_by_class_name("close_notice")
         for i in range(len(close_notices)): # 공지창 닫기
             close_notices[-i-1].click()
@@ -60,26 +67,7 @@ class Learning():
 
         for link in links:
             link.click()    # 강의 클릭
-
-
-            asd = driver.find_elements_by_tag_name('button')
-            for a in asd:
-                print(a)
-                print(a.text)
-            asd[0].click()
-
-            print("$$$$$$$44")
-            time.sleep(3)
-            print("$$$$$$$44")
-            webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
-            print("$$$$$$$44")
-
             driver.switch_to.window(driver.window_handles[-1])  # 오픈된 강의 창으로 포커스 이동
-
-
-            # WebDriverWait(driver, 7).until(EC.alert_is_present()) # 팝업창 처리
-            # driver.switch_to.alert.accept()
-
             
             while True: # 동영상 재생
                 try:
@@ -99,5 +87,5 @@ class Learning():
         driver.close()
 
 if __name__ == '__main__':
-    learn = Learning('학번', '비밀번호', '과목이름')
+    learn = Learning(sys.argv[0], sys.argv[1], sys.argv[2])
     learn.learn()
