@@ -12,17 +12,17 @@ class Learning():
         driver = None
         # if not driver:
         #     try:
-        #         driver = webdriver.Chrome(executable_path="chromedriver78.exe")
+        #         driver = webdriver.Chrome(executable_path="chromedriver/chromedriver78.exe")
         #     except:
         #         print("chromedriver78 fail")
         if not driver:
             try:
-                driver = webdriver.Chrome(executable_path="chromedriver77.exe")
+                driver = webdriver.Chrome(executable_path="chromedriver/chromedriver77.exe")
             except:
                 print("chromedriver77 fail")
         if not driver:
             try:
-                driver = webdriver.Chrome(executable_path="chromedriver76.exe")
+                driver = webdriver.Chrome(executable_path="chromedriver/chromedriver76.exe")
             except:
                 print("chromedriver76 fail")
         html = driver.page_source
