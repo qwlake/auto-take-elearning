@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-import e-learning
+from src.Learning import Learning
 
 
 class Ui_Dialog(object):
@@ -32,17 +33,17 @@ class Ui_Dialog(object):
         self.label_3.setObjectName("label_3")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.label_3)
 
-        self.lineEdit = QtWidgets.QLineEdit(self.formLayoutWidget)
-        self.lineEdit.setObjectName("lineEdit")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.lineEdit)
+        self.user_id = QtWidgets.QLineEdit(self.formLayoutWidget)
+        self.user_id.setObjectName("user_id")
+        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.user_id)
 
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.formLayoutWidget)
-        self.lineEdit_2.setObjectName("lineEdit_2")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.lineEdit_2)
+        self.password = QtWidgets.QLineEdit(self.formLayoutWidget)
+        self.password.setObjectName("password")
+        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.password)
 
-        self.lineEdit_3 = QtWidgets.QLineEdit(self.formLayoutWidget)
-        self.lineEdit_3.setObjectName("lineEdit_3")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.lineEdit_3)
+        self.cource_name = QtWidgets.QLineEdit(self.formLayoutWidget)
+        self.cource_name.setObjectName("cource_name")
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.cource_name)
 
         self.setupUi(Dialog)
         self.buttonBox.accepted.connect(self.run)
@@ -51,14 +52,14 @@ class Ui_Dialog(object):
 
     def setupUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "ㅋㅋㅋㅋㅋㅋ"))
+        Dialog.setWindowTitle(_translate("Dialog", "이러닝 자동 수강"))
         self.label.setText(_translate("Dialog", "학번"))
         self.label_2.setText(_translate("Dialog", "비밀번호"))
         self.label_3.setText(_translate("Dialog", "과목이름"))
 
     def run(self):
-        print(self.lineEdit.text())
-        e-learning()
+        ln = Learning(self.user_id.text(), self.password.text(), self.cource_name.text())
+        ln.learn()
 
 
 if __name__ == "__main__":
