@@ -12,31 +12,32 @@ class Learning():
         driver = None
         # if not driver:
         #     try:
-        #         driver = webdriver.Chrome(executable_path="chromedriver78.exe")
+        #         driver = webdriver.Chrome(executable_path="chromedriver/chromedriver78.exe")
         #     except:
         #         print("chromedriver78 fail")
         if not driver:
             try:
-                driver = webdriver.Chrome(executable_path="chromedriver77.exe")
+                driver = webdriver.Chrome(executable_path="chromedriver/chromedriver77.exe")
             except:
                 print("chromedriver77 fail")
         if not driver:
             try:
-                driver = webdriver.Chrome(executable_path="chromedriver76.exe")
+                driver = webdriver.Chrome(executable_path="chromedriver/chromedriver76.exe")
             except:
                 print("chromedriver76 fail")
         html = driver.page_source
         #soup = BeautifulSoup(html, "html.parser")
-
-        driver.get("http://eruri.kangwon.ac.kr")    # 페이지 열기
-        driver.find_element_by_id("username").send_keys(id)    # 로그인
-        driver.find_element_by_id("password").send_keys(pw)
+        self.id = id
+        self.pw = pw
         self.driver = driver
         self.cource_name = cource_name
         self.section = section
 
     def learn(self):
         driver = self.driver
+        driver.get("http://eruri.kangwon.ac.kr")    # 페이지 열기
+        driver.find_element_by_id("username").send_keys(id)    # 로그인
+        driver.find_element_by_id("password").send_keys(pw)
         driver.find_element_by_tag_name("Button").click()
         driver.implicitly_wait(2)
         close_notices = driver.find_elements_by_class_name("close_notice")
