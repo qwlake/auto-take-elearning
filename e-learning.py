@@ -60,16 +60,25 @@ class Learning():
         for link in links:
             link.click()    # 강의 클릭
 
-            # print("wait")
-            # time.sleep(5)
-            # print("wait complete")
 
-            # webdriver.ActionChains(driver).send_keys(Keys.ENTER).perform()
+            asd = driver.find_elements_by_tag_name('button')
+            for a in asd:
+                print(a)
+                print(a.text)
+            asd[0].click()
+
+            print("$$$$$$$44")
+            time.sleep(3)
+            print("$$$$$$$44")
+            webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
+            print("$$$$$$$44")
+
+            driver.switch_to.window(driver.window_handles[-1])  # 오픈된 강의 창으로 포커스 이동
+
 
             # WebDriverWait(driver, 7).until(EC.alert_is_present()) # 팝업창 처리
             # driver.switch_to.alert.accept()
 
-            driver.switch_to.window(driver.window_handles[-1])  # 오픈된 강의 창으로 포커스 이동
             
             while True: # 동영상 재생
                 try:
