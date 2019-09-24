@@ -12,11 +12,11 @@ from selenium.webdriver.common.keys import Keys
 class Learning():
     def __init__(self, user_id, pw, cource_name, section=0):
         driver = None
-        if not driver:
-            try:
-                driver = webdriver.Chrome(executable_path="chromedriver/chromedriver78.exe")
-            except:
-                print("chromedriver78 fail")
+        # if not driver:
+        #     try:
+        #         driver = webdriver.Chrome(executable_path="chromedriver/chromedriver78.exe")
+        #     except:
+        #         print("chromedriver78 fail")
         if not driver:
             try:
                 driver = webdriver.Chrome(executable_path="chromedriver/chromedriver77.exe")
@@ -67,6 +67,16 @@ class Learning():
 
         for link in links:
             link.click()    # 강의 클릭
+
+            # print("wait")
+            # time.sleep(5)
+            # print("wait complete")
+
+            # webdriver.ActionChains(driver).send_keys(Keys.ENTER).perform()
+
+            # WebDriverWait(driver, 7).until(EC.alert_is_present()) # 팝업창 처리
+            # driver.switch_to.alert.accept()
+
             driver.switch_to.window(driver.window_handles[-1])  # 오픈된 강의 창으로 포커스 이동
             
             while True: # 동영상 재생
