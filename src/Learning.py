@@ -58,8 +58,7 @@ class Learning():
                 break
 
         if self.section == 0:    # 현재 주차 강의 목록
-            course_box_current = driver.find_elements_by_class_name("course_box_current")   # 현제 강의 목록 창 받기
-            links = course_box_current[0].find_elements_by_tag_name("a")                    # 강의 목록 링크 저장
+            links = driver.find_elements_by_xpath("//div[@class='course_box course_box_current']//li[@class='activity vod modtype_vod ']//a[*]")  # 현제 강의 링크 목록
         else:   # 특정 주차 강의 목록
             links = driver.find_elements_by_xpath("//li[@id='section-" + self.section + "']//li[@class='activity vod modtype_vod ']//a[*]")  # n주차 강의 링크 목록
 
