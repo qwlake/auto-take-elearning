@@ -11,7 +11,7 @@ from contextlib import contextmanager
 
 
 class Learning():
-    def __init__(self, user_id, pw, cource_name, section=0):
+    def __init__(self, user_id, pw, cource_name, section=0, playback_rate=16):
         driver = None
         if not driver:
             try:
@@ -25,6 +25,7 @@ class Learning():
         self.driver = driver
         self.cource_name = cource_name
         self.section = section
+        self.playback_rate = playback_rate # max 16
 
     @contextmanager
     def wait_for_new_window(self, driver, timeout=10):
@@ -68,6 +69,8 @@ class Learning():
                 EC.presence_of_element_located((By.CLASS_NAME, "jw-video"))
             )
             element.click() # 동영상 재생
+            time.sleep(3)
+            driver.execute_script("(function(){let x=document.querySelector('video');x.playbackRate=x.playbackRate!=1?1:"+str(self.playback_rate)+";})();") # 동영상 배속
             while True: # 재생완료 체크
                 try:
                     time.sleep(1)
@@ -75,6 +78,7 @@ class Learning():
                     break
                 except:
                     pass
+            time.sleep(3)
             driver.close()  # 동영상 창 닫기
             driver.switch_to.window(driver.window_handles[-1])  # 메인 창으로 포커스 이동
 
