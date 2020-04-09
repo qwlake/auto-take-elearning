@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
+from contextlib import contextmanager
 
 
 class Learning():
@@ -14,19 +15,9 @@ class Learning():
         driver = None
         if not driver:
             try:
-                driver = webdriver.Chrome(executable_path="chromedriver/chromedriver78.exe")
+                driver = webdriver.Chrome(executable_path="chromedriver/chromedriver80.exe")
             except:
-                print("chromedriver78 fail")
-        if not driver:
-            try:
-                driver = webdriver.Chrome(executable_path="chromedriver/chromedriver77.exe")
-            except:
-                print("chromedriver77 fail")
-        if not driver:
-            try:
-                driver = webdriver.Chrome(executable_path="chromedriver/chromedriver76.exe")
-            except:
-                print("chromedriver76 fail")
+                print("chromedriver80 fail")
         html = driver.page_source
         #soup = BeautifulSoup(html, "html.parser")
         self.user_id = user_id
@@ -35,16 +26,23 @@ class Learning():
         self.cource_name = cource_name
         self.section = section
 
+    @contextmanager
+    def wait_for_new_window(self, driver, timeout=10):
+        handles_before = driver.window_handles
+        yield
+        WebDriverWait(driver, timeout).until(
+            lambda driver: len(handles_before) != len(driver.window_handles))
+
     def learn(self):
         driver = self.driver
         driver.get("http://eruri.kangwon.ac.kr")    # 페이지 열기
-        element = WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, 600).until(
             EC.presence_of_element_located((By.ID, "username"))
         )
         driver.find_element_by_id("username").send_keys(self.user_id)    # 로그인
         driver.find_element_by_id("password").send_keys(self.pw)
         driver.find_element_by_tag_name("Button").click()
-        element = WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, 600).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, ".close_notice"))
         )
         close_notices = driver.find_elements_by_class_name("close_notice")
@@ -66,14 +64,13 @@ class Learning():
             link.click()    # 강의 클릭
             driver.switch_to.window(driver.window_handles[-1])  # 오픈된 강의 창으로 포커스 이동
             
-            while True: # 동영상 재생
+            element = WebDriverWait(driver, 600).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "jw-video"))
+            )
+            element.click() # 동영상 재생
+            while True: # 재생완료 체크
                 try:
-                    driver.find_element_by_class_name("jw-state-playing")
-                    break
-                except:
-                    driver.find_element_by_class_name("jw-video").click()
-            while True: # 재생완료
-                try:
+                    time.sleep(1)
                     driver.find_element_by_class_name("jw-state-complete")
                     break
                 except:
@@ -84,5 +81,5 @@ class Learning():
         driver.close()
 
 if __name__ == '__main__':
-    learn = Learning(sys.argv[0], sys.argv[1], sys.argv[2])
+    learn = Learning(sys.argv[1], sys.argv[2], sys.argv[3])
     learn.learn()
